@@ -1,0 +1,164 @@
+{% extends 'index.html' %}
+
+{% block container %}
+    <div id="top">
+        <div>
+            <top_content/>
+        </div>
+        <div class="speech">
+            <h1>If it looks fun,<br><span class="sp">just do it</span></h1>
+        </div>
+    </div>
+    <div class="p-2 ">
+        <div class="tab">
+            <!-- Tab Button -->
+            <div class="tab__button">
+              <ul class="list ">
+                <li class="js-tab-trigger item is-current " data-tab-list="tabGroup1" data-tab-info="book_all">
+                  <button class="button " type="button">書　　籍</button>
+                </li>
+                <li class="js-tab-trigger item " data-tab-list="tabGroup1" data-tab-info="prog_all">
+                  <button class="button " type="button">プ　ロ　グ　ラ　ム</button>
+                </li>
+                <li class="js-tab-trigger item" data-tab-list="tabGroup1" data-tab-info="cat03">
+                  <button class="button " type="button">色々趣味後々掲載</button>
+                </li>
+              </ul>
+            </div>
+      
+            <!-- Tab Content -->
+            <div class="tab__content">
+                <div class="js-tab-content content is-current" data-tab-list="tabGroup1" data-tab-info="book_all">
+                    <h2 class="title">読み終わった書籍の紹介ページ</h2>
+                    <div class="box">
+                        <p class="text">
+                            初めまして。ページにおこしいただきましてありがとうございます。
+                            こちらのページでは今までに読んだ本や勉強する上で参考になった本などを紹介しています。
+                            また、こんな本も紹介したいなどありましたらフォームより追加して頂けると嬉しいです。
+                            宜しくお願い致します。
+                        </p>
+                        <div>
+                            {% block book_content %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+                <div class="js-tab-content content" style="display: none;" data-tab-list="tabGroup1" data-tab-info="prog_all">
+                    <h2 class="title">プログラムの技術とエラー紹介ページ</h2>
+                    <div class="box">
+                        <p class="text">
+                            初めまして。ページにおこしいただきましてありがとうございます。
+                            こちらのページでは今までにやってきたライブラリや言語の紹介に加えて
+                            それらに対するエラー類を紹介していきます。
+                            またこれは紹介したい！やこのエラーは気を付けた方がいいものなどありましたら
+                            フォームより追加して頂けると嬉しいです。宜しくお願い致します。
+                        </p>
+                        <div>
+                            {% block program_content %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+                <div class="js-tab-content content" style="display: none;" data-tab-list="tabGroup1" data-tab-info="cat03">
+                    <h2 class="title">趣味等紹介ページ</h2>
+                    <div class="box">
+                        <p class="text">
+                            現在、工事中。落ち着き次第何らかの項目を入れます。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% raw %}
+        <script type="text/x-template" id="top_content-template">
+            <div class="slider" >
+                <ul v-for="item in img_url">
+                    <li >
+                        <img :src="imagePath(item)" :alt="img(item)">
+                    </li>
+                </ul>
+            </div>
+        </script>
+    {% endraw %}
+
+
+    <script>
+        Vue.component('top_content',{
+            template:'#top_content-template',
+            /*コンポーネント内のdataは関数でないといけないのでこの形*/
+            data:function(){
+                return{
+                    img_url:[1,2,3,4,5,6,7,8,9,10,11,12,13]
+                }
+            },
+            methods:{
+                imagePath(item){
+                    let path = `../static/img/${item}.jpg`
+                    return path
+                },
+                img:function(item){
+                    let name = item + "の画像"
+                    return name
+                },
+
+            },
+            /*createdプロパティ←コンポーネントの初期化処理*/
+            
+            
+        });
+        
+
+        new Vue({
+            el:'#top'
+        })
+        //下記は画像のスライド用の関数（slickのやつ
+        $(document).ready(function () {
+            $('.slider').slick({
+                infinite: true,
+                arrows: true, 
+                dots: true, 
+                autoplay: true, 
+                Speed: 500, 
+                fade:true,
+                accessibility:true
+
+            });
+        });
+        $(function() {
+            // ①Tabの切替トリガー
+            var $tabTrigger = $('.js-tab-trigger');
+
+            // ②Tabのコンテンツ
+            var $tabContent = $('.js-tab-content');
+
+            // ③トリガーのクリック
+            $tabTrigger.on('click', function(event) {
+                // ④Clickイベントを止める
+                event.preventDefault();
+
+                // ⑤クリックしたタブ要素とdata属性を取得
+                var $target = $(event.currentTarget);
+                var $list = $target.data('tab-list');
+                var $info = $target.data('tab-info');
+
+                // ⑥選択中のトリガーを更新する
+                $tabTrigger
+                .filter('[data-tab-list="' + $list + '"]')
+                .removeClass('is-current')
+                .filter('[data-tab-info="' + $info + '"]')
+                .addClass('is-current');
+
+                // ⑦選択中のコンテンツを更新する
+                $tabContent
+                .filter('[data-tab-list="' + $list + '"]')
+                .removeClass('is-current')
+                .hide()
+                .filter('[data-tab-info="' + $info + '"]')
+                .addClass('is-current')
+                .show();
+            });
+        });
+
+    </script>
+    
+{% endblock %}

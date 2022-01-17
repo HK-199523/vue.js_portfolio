@@ -1,0 +1,410 @@
+body{
+  background-image: url("https://www.beiz.jp/images_M/watercolor/watercolor_00395.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #464646;
+}
+
+h1{
+  color:lightgray;
+  font-size: 36pt;
+  margin: 0;
+}
+p{
+  font-size: 14pt;
+}
+
+ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.contents{
+  background-color: white;
+  box-shadow:0px 0px 10px 5px white;
+  border:1px solid black;
+}
+
+
+/*ここからフォームの設定*/
+  /*ここはボタンの動作設定*/
+    a.form_btn {
+      margin-top: -5px;
+      color: white;
+      background-color: #00ffff;
+      border-bottom: 5px solid #20b2aa;
+      display: block;
+    }
+
+    a.form_btn:hover {
+      opacity: 0.8;
+    }
+
+    a.form_btn:active {
+      margin-top: 3px;
+      color: white;
+      background: #00ffff;
+      border-bottom: 2px solid #20b2aa;
+    }
+
+    a.btn--shadow {
+      -webkit-box-shadow: 0 3px 5px rgba(252, 247, 247, 0.3);
+      box-shadow: 0 3px 5px rgba(224, 217, 217, 0.3);
+    }
+  /*ここまで*/
+
+
+
+  /*ここからフォーム本体の設定*/
+      .modal-content{
+        position: absolute;
+        transform: translate(-30%, 10%);
+      }
+      /*１つの目のモーダル*/
+      .con1{
+        width: 600px;
+        height: 600px;
+      }
+      
+      .card-title{
+        background-color: #464646;
+        color: white;
+      }
+      .card a{
+        color: black;
+        display: block;
+        padding: 15px;
+        font-size: 18pt;
+      }
+      .card i{
+        margin-right: 10px;
+      }
+      .hover0:hover{
+        background-color: #464646;
+        color: white;
+        opacity: 0.9;
+        transition: all 0.5s ease 0s;
+      }
+      .hover0 a:hover{
+        color: white;
+        transition: all 0.5s ease 0s;
+      }
+      /*ここまで*/
+      /*2段目のモーダル*/
+      .con2{
+        width: 1000px;
+        height: 600px;
+      }
+      .book_img{
+        height: 500px
+      }
+      .book_img img{
+        width: 100%;
+      }
+      .pecke_mark:hover{
+        cursor: pointer;
+        opacity: 0.8;
+      }
+      @media (max-width: 1200px) {
+        .con2{
+          width:600px;
+          height: 500px;
+        }
+        .modal-content{
+          position: absolute;
+          transform: translate(-10%, 10%);
+        }
+       }
+      .modal-header{
+        font-size: 7pt;
+        background-color: #464646;
+        color: white;
+      }
+      .modal-header h1{
+        font-size: 15pt;
+      }
+      .modal-body{
+        overflow-y: scroll;
+      }
+          /*入力フォームの設定*/
+          .radio_form{
+            margin-left: 10px;
+            font-size: 10pt;
+          }
+          .heading{
+            font-size: 15pt;
+            font-weight: bold;
+          }
+          .in_alerm{
+            color: red;
+          }
+      /*ここまで*/
+      .con3{
+        width: 300px;
+        height: 300px;
+      }
+      
+      
+          
+/*ここから*/
+
+/*横のサイドバーの設定*/
+    .side_decolation{
+      margin-bottom: 20px;
+    }
+
+    .side_decolation ul{
+      display: block;
+      text-decoration: none;
+      font-family:cursive ;
+    }
+
+    /*ここでhorver9のアニメーション設定*/
+    .hover9 {
+      display: block;
+      position: relative;
+    }
+    /*下記が変わり始まる前の設定。最初にこの状態になろうとした後したのカーソルが乗った状態に変化する*/
+    .hover9::after {
+      position: absolute;
+      content: '';
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 10px;
+      background: #2196F3;
+      opacity: 0.5;
+      transition: all 0.3s ease 0s; /*変化時間*/
+    }
+    /*下記カーソルがリンクに置いたと認知する記述*/
+    .hover9:hover {
+      cursor: pointer;
+    }
+    /*下記はカーソルを置いた時に上で設定された状態にどのあたりまで変化するかを表す*/
+    /*今回はリスト項目の後ろバックカラー*/
+    .hover9:hover::after {
+      width: 100%;
+      height: 10%;
+    }
+    /*ここまで*/
+
+    /*フォームの設定*/
+    .add-form{
+      position: absolute;
+
+    }
+/*ここまで*/
+
+
+
+/*topページのスライドショー設定*/
+    .speech{
+      position: absolute;
+      top: 250px;
+      left: 300px;
+      z-index: 150;
+    }
+    .speech h1{
+      text-shadow : 0px 0px 6px black ;
+      font-size: 50pt;
+      color:lightgray;
+    }
+    .speech span{
+      margin-left: 30px;
+    }
+
+    .slider {  
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .slick-slide{
+      height:auto!important;
+    }
+    .slick-next{
+      right:0!important;
+    }
+    .slick-prev{
+      left:0!important;
+    }
+    .slick-arrow{
+      z-index:2!important;
+    }
+
+
+    .slider img{
+      display: block;
+      max-width: 100%;
+    }
+/*ここまで*/
+
+/*タブのアニメーション及び表示*/
+        /*後から追加したやつ*/
+        .tab{
+          display: block;
+        }
+
+        /*tab in book の設定*/
+        .tab1{
+          padding: 0 10px;
+          margin: 50px 0;
+        }
+        .tab__button_1{
+          height: 50px;
+        }
+        .button_1 {
+          cursor: pointer;
+          appearance: none;
+          border-radius: 0;
+          border-style: none;
+          width: 100%;
+          height: 100%;
+          border-bottom: 7px solid black;
+          transition: all .25s ease-in-out;
+        }
+        .button_1:hover {
+          font-weight: bold;
+          border-bottom: 7px solid rgb(65, 61, 61);
+        }
+        .button_1:focus {
+          outline: none;
+        }
+        .is-current_1 .button_1 {
+          color: #fff;
+          background: black;
+          border-bottom: 7px solid white;
+        }
+        .is-current_1 .button_1:hover {
+          border-bottom: 7px solid rgb(170, 170, 170);
+        }
+        .is-current_2 .button_1 {
+          color: #fff;
+          background: black;
+          border-bottom: 7px solid white;
+        }
+        .is-current_2 .button_1:hover {
+          border-bottom: 7px solid rgb(170, 170, 170);
+        }
+
+        .active .button_1 {
+          color: #fff;
+          background: black;
+          border-bottom: 7px solid white;
+        }
+        .active .button_1:hover {
+          border-bottom: 7px solid rgb(170, 170, 170);
+        }
+        .tab_button{
+          margin-bottom: 30px;
+        }
+        
+        /*ここまで*/
+        .tab__button {
+          height: 70px;
+          font-size: 25px;
+        }
+        .list {
+          display: flex;
+          list-style: none;
+          height: 100%;
+        }
+        .list1 {
+          display: flex;
+          list-style: none;
+          float: left;
+        }
+        .item {
+          width: 100%;
+          border: 0;
+          height: 100%;
+        }
+        .item1{
+          width:200px;
+          height: 50px;
+        }
+        .button {
+          cursor: pointer;
+          appearance: none;
+          border-radius: 0;
+          border-style: none;
+          width: 100%;
+          height: 100%;
+          border-bottom: 7px solid black;
+          transition: all .25s ease-in-out;
+        }
+        .button:hover {
+          font-weight: bold;
+          border-bottom: 7px solid rgb(65, 61, 61);
+        }
+        .button:focus {
+          outline: none;
+        }
+        .is-current .button {
+          color: #fff;
+          background: black;
+          border-bottom: 7px solid white;
+        }
+        .is-current .button:hover {
+          border-bottom: 7px solid rgb(170, 170, 170);
+        }
+
+        
+        /* Tab Content */
+        .title {
+          border-left: 7px solid rgb(15, 15, 61);
+          font-size: 30px;
+          padding-left: 10px;
+          margin: 10px auto 20px;
+        }
+        
+        .box {
+          display: block;
+        }
+        /*
+        @media screen and (max-width:767px) {
+          .box {
+            flex-direction: column;
+            padding: 20px;
+          }
+        }*/
+        
+        .text {
+          width: 100%;
+          font-size: 16px;
+          line-height: 1.5;
+          text-align: left;
+          margin: 20px ;
+          padding-right: 20px;
+        }
+        /*ここまで*/
+/*ここまで*/
+
+/*追加した情報を表示するための設定*/
+      /*.roll_display{
+        height: 500px;
+      }*/
+      .roll_display .card-body{
+        overflow-y: scroll;
+        height: 500px;
+      }
+
+
+
+
+
+
+@media (max-width: 767.98px) {
+  .speech{
+    position: absolute;
+      top: 100px;
+      left: 150px;
+  }
+  .speech h1{
+    text-shadow : 0px 0px 6px black ;
+    font-size: 20pt;
+    color:lightgray;
+  }
+ }
