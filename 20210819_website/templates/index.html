@@ -1,0 +1,538 @@
+{% extends 'layout.html' %}
+
+{% block titele %}
+{{title}}
+{% endblock %}
+
+{% block headline %}
+{{title}}
+{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class=" col-lg-9 col-md-12 contents px-0">
+            {% block container %}{% endblock %}
+        </div>
+        <div class="col-lg-3 col-md-12">
+            <div id="side"class="side_decolation">
+                <side_ber/>
+            </div>
+            <div id="form" class="form_decolation" >
+                <form_all/>
+            </div>
+            <!--raw内にあるテンプレートはあくまで値を渡して簡単な処理を行う場である。
+                なのでraw内では変数に渡された値を加工処理はリスクがあり変数に渡された値を処理するなら
+                methodプロパティで制御した方が無難。テンプレート内は基本的に値をの受け渡しのみ-->
+            {% raw %}
+                <script type="text/x-template" id="side_ber-template">
+                    <div class="">
+                        <a class=" text-white" style="text-decoration: none;" href="/" ><h2 class="">MENU 一覧</h2></a>
+                        <div class="list_deco" v-for="item in Menu_data">
+                            <ul class="list-group">
+                                <a class="text-white"  style="text-decoration: none; clickable-row padding: 200px;" :href="indexPath(item[0])">
+                                    <li class=" hover9 list-group-item bg-dark rounded-0" style="clickable-row"><!--属性内でv-forなどによる値の受け渡しに{{}}は必要ない。文章内のみ必要。-->
+                                        {{item[1]}}
+                                    </li>
+                                </a>
+                            </ul>
+                            <ul v-for="item1 in item[2]" class="list-group">
+                                <a class="text-dark" style="text-decoration: none;" :href="indexPath(item1[0])">
+                                    <li  class=" hover9  list-group-item rounded-0" style="clickable-row">
+                                        {{item1[1]}}
+                                    </li>
+                                </a>
+                            </ul>
+                        </div>
+                    </div>
+                </script>
+
+                <script type="text/x-template" id="form-template">
+                    <div>
+                        <div class="botan">
+                            <a class="btn form_btn btn_shadow text-white" v-on:click="category_select">
+                                add information
+                            </a>
+                        </div>
+                        <div class="modal fade" id="select_ca">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content con1">
+                                    <div class="card">
+                                        <div class="card-title"><h3 class="p-2">入力カテゴリ選択</h3>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>※追加するカテゴリをクリックしてください。</p>
+                                                <p class="hover0 p-3"><a style="text-decoration: none;" href="javascript:void(0)" v-on:click="output_book_form">
+                                                    <i class="fas fa-arrow-alt-circle-right"></i>書籍入力フォーム</a>
+                                                </p>
+                                                <p class="hover0 p-3"><a style="text-decoration: none;" href="javascript:void(0)" v-on:click="output_prog_te_form">
+                                                    <i class="fas fa-arrow-alt-circle-right"></i>プログラム（技法）入力フォーム</a>
+                                                </p>
+                                                <p class="hover0 p-3"><a style="text-decoration: none;" href="javascript:void(0)" v-on:click="output_prog_error_form">
+                                                    <i class="fas fa-arrow-alt-circle-right"></i>プログラム（エラー）入力フォーム</a>
+                                                </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--書籍入力フォーム-->
+                        <div class="modal fade" id="form_content_book">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content con2">
+                                    <div class="modal-header">
+                                        <h1>書籍カテゴリ入力フォーム</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <p class="heading">書籍名<span class="badge badge-danger">必須</span></p>
+                                            <input type="text" class="form-control" id="book_name" name="book_name" v-model="book_name_form" placeholder="書籍名">
+                                        </div>
+                                        <p class="in_alerm">{{alert_msg1}}</p>
+                                        <div class="form-group">
+                                            <p class="heading">書籍のカテゴリを選択してください。<span class="badge badge-danger">必須</span></p>
+                                            <label><input type="radio" class="radio_form" v-model="book_ca_form" id="book_category" name="book_category" value="小説">小説</label>
+                                            <label><input type="radio" class="radio_form" v-model="book_ca_form" id="book_category" name="book_category" value="IT参考書">IT参考書</label>
+                                            <label><input type="radio" class="radio_form" v-model="book_ca_form" id="book_category" name="book_category" value="その他">その他</label>
+                                        </div>
+                                        <p class="in_alerm">{{alert_msg2}}</p>
+                                            <div v-if="book_ca_form == 'IT参考書' ">
+                                                <p class="heading">そのIT参考書で使用されている言語またはライブラリ等を選択して下さい。<span class="badge badge-danger">必須</span></p>
+                                                <div class="form-group">
+                                                    <label for="q2_11"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="11">無し</label>
+                                                    <label for="q2_1"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="1">HTML</label>
+                                                    <label for="q2_2"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="2">CSS</label>
+                                                    <label for="q2_3"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="3">bootstrap</label>
+                                                    <label for="q2_4"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="4">javascript</label>
+                                                    <label for="q2_5"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="5">Vue.js</label>
+                                                    <label for="q2_6"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="6">python</label>
+                                                    <label for="q2_7"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="7">Anaconda</label>
+                                                    <label for="q2_8"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="8">openCV</label>
+                                                    <label for="q2_9"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="9">SQLalchemy</label>
+                                                    <label for="q2_10"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="10">その他</label>
+                                                    <label for="q2_12"><input type="radio" class="radio_form" v-model="la_id_form" name="la_id" id="la_id" value="12">アルゴリズム関係</label>
+                                                </div>
+                                            </div>
+                                        <div class="form-group">
+                                            <p class="heading">書籍の表紙画像リンクがあればコピペしてください。</p>
+                                            <input type="text" class="form-control" id="book_pic" name="book_pic" v-model="book_pic_form" placeholder="書籍表紙　画像リンク">
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="heading">書籍のページ数を入力してください。</p>
+                                            <p>
+                                                <input type="number" class="m-1" size="5" id="book_page" name="book_page" v-model="book_page_form">ページ
+                                            </p>
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="heading">書籍の感想を入力してください。</p>
+                                            <textarea class="form-control" id="book＿impre" name="book_impre" v-model="book_impre_form" rows="8">
+
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="form-group">
+                                            <button class="btn btn-primary" v-on:click="add_info_book">add infomation</button>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-primary" v-on:click="add_info_delete" >cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </dIV>
+                        <!--ここまで-->
+                        <!--プログラム技法類追加フォーム-->
+                        <div class="modal fade" id="form_content_tech">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content con2">
+                                    <div class="modal-header">
+                                        <h1>プログラム（技法）入力フォーム</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="heading">技法で使用されている言語またはライブラリ等を選択して下さい。<span class="badge badge-danger">必須</span></p>
+                                        <div class="form-group" >
+                                            <label for="q2_1"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="1">HTML</label>
+                                            <label for="q2_2"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="2">CSS</label>
+                                            <label for="q2_3"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="3">bootstrap</label>
+                                            <label for="q2_4"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="4">javascript</label>
+                                            <label for="q2_5"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="5">Vue.js</label>
+                                            <label for="q2_6"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="6">python</label>
+                                            <label for="q2_7"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="7">Anaconda</label>
+                                            <label for="q2_8"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="8">openCV</label>
+                                            <label for="q2_9"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="9">SQLalchemy</label>
+                                            <label for="q2_10"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="10">アルゴリズム関係</label>
+                                            <label for="q2_11"><input type="radio" class="radio_form" v-model="la_id_2" name="la_id" id="la_id" value="12">その他</label>
+                                            <p class="in_alerm">{{alert_msg3}}</p>
+                                        </div>
+                                        <p class="heading">登録してあるIT参考書の中で参考になるものがあれば選択してください。（任意）</p>
+                                        <div class="form-group">
+                                            <select class="form-select" aria-label="Default select example" name = "bo_id" v-model = "bo_id" placeholder="選択してください。">
+                                                <option value="1">なし</option>
+                                                <option value="2">Flaskで学ぶwebアプリケーションの作り方</option>
+                                                <option value="3">ゼロから作るDeep Learning　Pythonで学ぶディープラーニングの理論と実装</option>
+                                                <option value="4">HTML＆CSS,JavaScriptのきほんのきほん</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="heading">プログラム（技法）見出し<span class="badge badge-danger">必須</span></p>
+                                            <input type="text" class="form-control" id="la_name" name="la_name" v-model="la_name" placeholder="技法　見出し">
+                                            <p class="in_alerm">{{alert_msg4}}</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="heading">このプログラム技法に適したレベルを選択してください。<span class="badge badge-danger">必須</span></p>
+                                            <label><input type="radio" class="radio_form" v-model="level" id="level" name="level" value="1">初級（これから学び始める）</label>
+                                            <label><input type="radio" class="radio_form" v-model="level" id="level" name="level" value="2">初級（学習期間：1か月）</label>
+                                            <label><input type="radio" class="radio_form" v-model="level" id="level" name="level" value="3">中級（学習期間：2か月～10か月）</label>
+                                            <label><input type="radio" class="radio_form" v-model="level" id="level" name="level" value="4">中級（11か月～2年）</label>
+                                            <label><input type="radio" class="radio_form" v-model="level" id="level" name="level" value="5">中級（学習期間：2年～5年）</label>
+                                            <label><input type="radio" class="radio_form" v-model="level" id="level" name="level" value="6">上級（学習期間：6年～）</label>
+                                            <p class="in_alerm">{{alert_msg5}}</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="heading">説明するcodeを入力してください。<span class="badge badge-danger">必須</span></p>
+                                            <textarea class="form-control" id="code" name="code" v-model="code" rows="8">
+                                            </textarea>
+                                            <p class="in_alerm">{{alert_msg6}}</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="heading">codeについての説明を入力してください。<span class="badge badge-danger">必須</span></p>
+                                            <textarea class="form-control" id="de_exp" name="de_exp" v-model="de_exp" rows="8">
+                                            </textarea>
+                                            <p class="in_alerm">{{alert_msg7}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="form-group">
+                                            <button class="btn btn-primary" v-on:click="add_info_tech">add infomation</button>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-primary" v-on:click="add_info_delete" >cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </dIV>
+                        <!--ここまで-->
+                        <!--プログラムエラー類入力-->
+                        <div class="modal fade" id="form_content_error">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content con2">
+                                    <div class="modal-header">
+                                        <h1>プログラム（エラー）入力フォーム</h1>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p class="heading">エラーが出ているソースの言語またはライブラリ等を選択して下さい。<span class="badge badge-danger">必須</span></p>
+                                        <div class="form-group" >
+                                            <label for="q2_1"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="1">HTML</label>
+                                            <label for="q2_2"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="2">CSS</label>
+                                            <label for="q2_3"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="3">bootstrap</label>
+                                            <label for="q2_4"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="4">javascript</label>
+                                            <label for="q2_5"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="5">Vue.js</label>
+                                            <label for="q2_6"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="6">python</label>
+                                            <label for="q2_7"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="7">Anaconda</label>
+                                            <label for="q2_8"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="8">openCV</label>
+                                            <label for="q2_9"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="9">SQLalchemy</label>
+                                            <label for="q2_10"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="10">アルゴリズム関係</label>
+                                            <label for="q2_11"><input type="radio" class="radio_form" v-model="la_id_3" name="la_id_3" id="la_id" value="12">その他</label>
+                                            <p class="in_alerm">{{alert_msg8}}</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="heading">エラー名を入力してください。<span class="badge badge-danger">必須</span></p>
+                                            <input type="text" class="form-control" id="err_name" name="err_name" v-model="err_name" placeholder="技法　見出し">
+                                            <p class="in_alerm">{{alert_msg9}}</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="heading">エラー名付近にあるエラーの説明文またはそれに該当する英文を入力してください。<span class="badge badge-danger">必須</span></p>
+                                            <textarea class="form-control" id="err_body" name="err_body" v-model="err_body" rows="8">
+                                            </textarea>
+                                            <p class="in_alerm">{{alert_msg10}}</p>
+                                        </div>
+                                        <div class="form-group">
+                                            <p class="heading">エラーの詳細な説明とわかれば解決方法も入力してください。<span class="badge badge-danger">必須</span></p>
+                                            <textarea class="form-control" id="err_detil" name="err_detil" v-model="err_detil" rows="8">
+                                            </textarea>
+                                            <p class="in_alerm">{{alert_msg11}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="form-group">
+                                            <button class="btn btn-primary" v-on:click="add_info_error">add infomation</button>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="btn btn-primary" v-on:click="add_info_delete" >cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </dIV>
+                        <!--ここまで-->
+                        <!--送信完了・未完了通知モーダル-->
+                        <div class="modal fade" id="notice">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content con3">
+                                    <div class="modal-header">
+                                        <h1>通知</h1>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        {{alert_msg}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </script>
+            {% endraw %}
+            
+        </div>
+    </div>
+    <script>
+        Vue.component('side_ber',{
+            template:'#side_ber-template',
+            /*コンポーネント内のdataは関数でないといけないのでこの形*/
+            data:function(){
+                return{
+                    Menu_data:[["book","書籍",[["norbel","小説"],["it_book","IT参考書"],["etc","その他"]]],
+                               ["program","プログラム",[["html","HTML"],["css","CSS"],["bootstrap","bootstrap"],["javascript","Javascript"],["Vue_js","Vue.js"],["python","python"],["anaconda","Anaconda"],
+                               ["opencv","openCV"],["alchemy","SQLalchemy"],["etc_tech","その他"],["algorithm","アルゴリズム関係"]]]]
+                }
+            },
+            methods:{
+                indexPath:function(item){
+                    let path = "/" + item;
+                    return path
+                }
+            },
+        });
+        /*ここからform設定*/
+        Vue.component('form_all',{
+            template:'#form-template',
+            data:function(){
+                return{
+                    book_name_form:'',
+                    book_ca_form:'',
+                    la_id_form:11,
+                    book_pic_form:'',
+                    book_page_form:'',
+                    book_impre_form:'',
+                    cancel_modal:'',
+                    alert_msg1:'',
+                    alert_msg2:'',
+
+                    la_id_2:'',
+                    bo_id:'',
+                    la_name:'',
+                    level:'',
+                    code:'',
+                    de_exp:'',
+                    alert_msg3:'',
+                    alert_msg4:'',
+                    alert_msg5:'',
+                    alert_msg6:'',
+                    alert_msg7:'',
+
+                    la_id_3:'',
+                    err_name:'',
+                    err_body:'',
+                    err_detil:'',
+                    alert_msg8:'',
+                    alert_msg9:'',
+                    alert_msg10:'',
+                    alert_msg11:'',
+
+                    alert_msg:''
+                }
+            },
+            methods:{
+                category_select:function(){
+                    $('#select_ca').modal();
+                },
+                    output_book_form:function(e){
+                        this.modal_close('#select_ca');
+                        cancel_modal = '#form_content_book';
+                        $('#form_content_book').modal();
+                    },
+                    output_prog_te_form:function(e){
+                        this.modal_close('#select_ca');
+                        cancel_modal = '#form_content_tech';
+                        $('#form_content_tech').modal();
+                    },
+                    output_prog_error_form:function(e){
+                        this.modal_close('#select_ca');
+                        cancel_modal = '#form_content_error';
+                        $('#form_content_error').modal();
+                    },
+
+
+                /*ここで入力された書籍のデータをバックエンドに送る*/
+                add_info_book:function(e){
+                    if(this.book_name_form !='' && this.book_ca_form != ''){
+                        let formData = new FormData();
+                        formData.append("b_n",this.book_name_form);
+                        formData.append("ca",this.book_ca_form);
+                        formData.append("la_id",this.la_id_form);
+                        formData.append("book_pic_ad",this.book_pic_form);
+                        formData.append("page",this.book_page_form);
+                        formData.append("impre",this.book_impre_form);
+                        let D = formData
+                        let self = this;
+                        $.ajax({
+                            type:'POST',
+                            url:'/post_book',
+                            data:formData,
+                            processData:false,
+                            contentType:false,
+                            success:function(data){
+                                if(data == 'True'){
+                                    $('#notice').modal();
+                                    self.alert_msg='※メッセージを送信しました。';
+                                    self.modal_close('#form_content_book');
+                                    //初期化処理
+                                    self.la_id_form = 11;
+                                    self.book_name_form = self.book_ca_form = self.book_pic_form = self.book_page_form = self.book_impre_form = self.alert_msg1 = self.alert_msg2 = '';
+                                    //あとでこっちで取得させる用の関数も用意
+                                }
+                            },
+                            error:function(request,status,err){
+                                self.alert_msg='<i class="fas fa-exclamation-circle"></i>※メッセージ送信に問題が発生しました。';
+                            }
+                        });
+                    }else{
+                        if(this.book_name_form == ''){
+                            this.alert_msg1 = '※書籍名を入力してください。'
+                        }else{this.alert_msg1 = ''}
+                        if(this.book_ca_form == ''){
+                            this.alert_msg2 = '※書籍のカテゴリを選択してください。'
+                        }else{this.alert_msg2 = ''}
+                    }
+                },
+                //ここまで
+                //ここで入力されたプログラム技法のデータをバックエンドに送る
+                add_info_tech:function(){
+                    if(this.la_id_2 !='' && this.la_name != '' && this.level != '' && this.code != ''&& this.de_exp != ''){
+                        let formData = new FormData();
+                        formData.append("la_id",this.la_id_2);
+                        formData.append("bo_id",this.bo_id);
+                        formData.append("la_na",this.la_name);
+                        formData.append("le_level",this.level);
+                        formData.append("la_code",this.code);
+                        formData.append("explain",this.de_exp);
+                        let self = this;
+                        $.ajax({
+                            type:'POST',
+                            url:'/post_tech',
+                            data:formData,
+                            processData:false,
+                            contentType:false,
+                            success:function(data){
+                                if(data == 'True'){
+                                    $('#notice').modal();
+                                    self.alert_msg='※メッセージを送信しました。';
+                                    self.modal_close('#form_content_tech');
+                                    //初期化処理
+                                    self.la_id_2 = self.bo_id = self.la_name = self.level = self.code = self.de_exp = self.alert_msg0 = '';
+                                    //あとでこっちで取得させる用の関数も用意
+                                }
+                            },
+                            error:function(request,status,err){
+                                self.alert_msg='<i class="fas fa-exclamation-circle"></i>※メッセージ送信に問題が発生しました。';
+                            }
+                        });
+                    }else{
+                        /*できればループなど省略を余裕があればやる。*/
+                        if(this.la_id_2 == ''){
+                            this.alert_msg3 = '※必須項目です。'
+                        }else{this.alert_msg3 = ''}
+                        if(this.la_name == ''){
+                            this.alert_msg4 = '※必須項目です。'
+                        }else{this.alert_msg4 = ''}
+                        if(this.level == ''){
+                            this.alert_msg5 = '※必須項目です。'
+                        }else{this.alert_msg5 = ''}
+                        if(this.code == ''){
+                            this.alert_msg6 = '※必須項目です。'
+                        }else{this.alert_msg6 = ''}
+                        if(this.de_exp == ''){
+                            this.alert_msg7 = '※必須項目です。'
+                        }else{this.alert_msg7 = ''}
+                    }
+                },
+                //ここまで
+                //ここで入力されたプログラム（エラー）で入力された内容を送信。
+                add_info_error:function(){
+                    if(this.la_id_3 !='' && this.err_name != '' && this.err_body != '' && this.err_detil != ''){
+                        let formData = new FormData();
+                        formData.append("la_id",this.la_id_3);
+                        formData.append("err_na",this.err_name);
+                        formData.append("err_body",this.err_body);
+                        formData.append("err_de",this.err_detil);
+                        let self = this;
+                        $.ajax({
+                            type:'POST',
+                            url:'/post_error',
+                            data:formData,
+                            processData:false,
+                            contentType:false,
+                            success:function(data){
+                                if(data == 'True'){
+                                    $('#notice').modal();
+                                    self.alert_msg='※メッセージを送信しました。';
+                                    self.modal_close(cancel_modal);
+                                    //初期化処理
+                                    self.la_id_3 = self.err_name = self.err_body = self.err_detil = '';
+                                    //あとでこっちで取得させる用の関数も用意
+                                }
+                            },
+                            error:function(request,status,err){
+                                self.alert_msg='<i class="fas fa-exclamation-circle"></i>※メッセージ送信に問題が発生しました。';
+                            }
+                        });
+                    }else{
+                        /*できればループなど省略を余裕があればやる。*/
+                        if(this.la_id_3 == ''){
+                            this.alert_msg8 = '※必須項目です。'
+                        }else{this.alert_msg8 = ''}
+                        if(this.err_name == ''){
+                            this.alert_msg9 = '※必須項目です。'
+                        }else{this.alert_msg9 = ''}
+                        if(this.err_body == ''){
+                            this.alert_msg10 = '※必須項目です。'
+                        }else{this.alert_msg10 = ''}
+                        if(this.err_detil == ''){
+                            this.alert_msg11 = '※必須項目です。'
+                        }else{this.alert_msg11 = ''}
+                    }
+                },
+                //ここまで
+                add_info_delete:function(e){
+                    let c = cancel_modal
+                    $(c).modal('hide');
+                },
+                modal_close:function(cf){
+                    $(cf).modal('hide');
+                },
+                intial_variable:function(list){
+                    let self = this;
+                    for(const item in list){
+                        self.item = "";
+                    }
+                }
+            },
+            /*createdプロパティ←コンポーネントの初期化処理*/
+            
+            
+        });
+
+        new Vue({
+            el:'#side'
+        })
+        new Vue({
+            el:'#form'
+        })
+               
+    </script>
+    
+    
+{% endblock %}
+
+{% block footer %}
+copyright hiroki-kondo2021
+{% endblock %}

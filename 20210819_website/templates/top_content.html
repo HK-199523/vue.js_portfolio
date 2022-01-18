@@ -1,0 +1,648 @@
+{% extends 'top.html' %}
+
+{% block book_content %}
+    <div id='book_obj'>
+        <book_show/>
+    </div>-
+    
+    {% raw %}
+        <script type="text/x-template" id="book_show_template">
+            <div>
+                <div class="card roll_display" style="margin-bottom:30px;">
+                    <div class="card-title p-2">
+                        LATEST POST IN ALL BOOK
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <tbody><!--class="clickable" :data-id=item.id v-on:click = "dis_detil_book('item.id')"-->
+                                <tr v-for="(item,key) in all_book_list"  >
+                                    <td class="clickable-row" v-on:click= "dis_detil_book" :data-id="item.id">
+                                        <ul>
+                                            <li style="font-weight:bold;">{{item.b_n}}</li>
+                                            <li>{{words_length(item.impre)}}</li>
+                                            <li class="text-right">{{item.create}}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="tab1">
+                    <!-- Tab Button -->
+                    <div class="tab__button_1">
+                        <ul class="list">
+                            <li class="js-tab-trigger_1 item is-current_1 " data-tab-list="tabGroup1_1" data-tab-info="norbel_top">
+                                <button class="button_1 " type="button">小　　　説</button>
+                            </li>
+                            <li class="js-tab-trigger_1 item " data-tab-list="tabGroup1_1" data-tab-info="referen_top">
+                                <button class="button_1 " type="button">I　T　　参　考　書</button>
+                            </li>
+                            <li class="js-tab-trigger_1 item" data-tab-list="tabGroup1_1" data-tab-info="etc_top">
+                                <button class="button_1 " type="button">そ　　の　　他</button>
+                            </li>
+                        </ul>
+                    </div>
+              
+                    <!-- Tab Content -->
+                    <div class="tab__content">
+                        <div class="js-tab-content_1 content is-current_1" data-tab-list="tabGroup1_1" data-tab-info="norbel_top">
+                            <h2 class="title">読破済小説　紹介ページ</h2>
+                            <div class="box">
+                                <p class="text">
+                                    ここでは読み終えた小説の紹介していきます。そこまで読書量が多いわけではないのでちまちま上げていきますが
+                                    参考にしていってください。また紹介したい小説あれば右下のフォームより追加をして頂けると嬉しいです。
+                                </p>
+                                <div class="card roll_display">
+                                    <div class="card-title p-2">
+                                        LATEST NOVELS POST
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <tr v-for="(item,key) in novel_book_list">
+                                                    <td class="clickable-row" v-on:click= "dis_detil_book" :data-id="item.id">
+                                                        <ul>
+                                                            <li style="font-weight:bold;">{{item.b_n}}</li>
+                                                            <li>{{words_length(item.impre)}}</li>
+                                                            <li class="text-right">{{item.create}}</li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-tab-content_1 content" style="display: none;" data-tab-list="tabGroup1_1" data-tab-info="referen_top">
+                            <h2 class="title">読破・実践済みIT参考書　紹介ページ</h2>
+                            <div class="box">
+                                <p class="text">
+                                    ここでは今までに読んだり実際コードを書いて実践したり勉強の参考で使用した本などを紹介します。
+                                    自分の目線での紹介なのでもしかしたら実際買ってみて差異があると思うので参考程度に読んでください。
+                                    また、その他に紹介したい本などありましたら右下のフォームより追加して頂けるうれしいです。
+                                </p>
+                                <div class="card roll_display">
+                                    <div class="card-title p-2">
+                                        LATEST IT BOOKS POST
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <tr v-for="(item,key) in referen_book_list">
+                                                    <td class="clickable-row" v-on:click= "dis_detil_book" :data-id="item.id">
+                                                        <ul>
+                                                            <li style="font-weight:bold;">{{item.b_n}}</li>
+                                                            <li>{{words_length(item.impre)}}</li>
+                                                            <li class="text-right">{{item.create}}</li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="js-tab-content_1 content" style="display: none;" data-tab-list="tabGroup1_1" data-tab-info="etc_top">
+                            <h2 class="title">その他のジャンルの本　紹介ページ</h2>
+                            <div class="box">
+                                <p class="text">
+                                    ここで小説やIT参考書以外の本で読んだ本を紹介するページになります。基本的には自己啓発本や自伝などの部類を
+                                    紹介していく予定です。基本的に自分のお気に入りしか見ないのでその他にも紹介したい本などありましたら
+                                    右下のフォームから追加して頂けると嬉しいです。
+                                </p>
+                                <div class="card roll_display">
+                                    <div class="card-title p-2">
+                                        LATEST OTHER BOOKS POST
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-hover">
+                                            <tbody>
+                                                <tr v-for="(item,key) in etc_book_list">
+                                                    <td class="clickable-row" v-on:click= "dis_detil_book" :data-id="item.id">
+                                                        <ul>
+                                                            <li style="font-weight:bold;">{{item.b_n}}</li>
+                                                            <li>{{words_length(item.impre)}}</li>
+                                                            <li class="text-right">{{item.create}}</li>
+                                                        </ul>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--ここから詳細表示用のモーダル-->
+                <div>
+                    <div class="modal fade" id="detil_modal">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content con2">
+                                <div class="modal-header">
+                                    <h1>{{book_detil.b_n}}</h1>
+                                    <div class="pecke_mark" style="font-size:20pt" v-on:click="close_modal2"><i class="far fa-times-circle text-right"></i></div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <h3 class="col-12 ">書籍名：{{book_detil.b_n}}</h3>
+                                        <div class="col-12">書籍のカテゴリ：{{book_detil.ca}}</div>
+                                    </div>
+                                    <div class="row" style="margin:30px 0;">
+                                        <div class="col-4 book_img">
+                                            <img class="text-center" :src="book_detil.book_pic_ad" alt="No Image">
+                                        </div>
+                                        <div class="col-8" style="padding:0 10px;">
+                                            {{book_detil.impre}}
+                                        </div>
+                                    </div>
+                                    <div>総ページ数：{{book_detil.page}}ページ</div>
+                                    <div>プログラミング言語名：{{book_detil.language}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </dIV>
+                </div>{{all_book_list}}
+            </div>
+        </script>
+    {% endraw %}
+        <script>
+            Vue.component('book_show',{
+                template:'#book_show_template',
+                /*コンポーネント内のdataは関数でないといけないのでこの形*/
+                data:function(){
+                    let all_book_list = [];
+                    let novel_book_list = [];
+                    let referen_book_list = [];
+                    let etc_book_list = [];
+                    let delete_after_use= [];
+                    let self = this;
+                    $.ajax({
+                            type:'POST',
+                            url:'/get_list',
+                            processData:false,
+                            contentType:false,
+                                success:function(data){
+                                    self.all_book_list = data[0];
+                                    self.novel_book_list = data[1];
+                                    self.referen_book_list = data[2];
+                                    self.etc_book_list = data[3];
+                                    
+                                },
+                                error:function(request,status,err){
+                                    
+                                }
+                            });
+                    return{
+                        list_book:[],
+                        all_book_list,
+                        novel_book_list,
+                        referen_book_list,
+                        etc_book_list,
+                        book_detil:[]
+                    }
+                },
+                methods:{
+                    words_length:function(long_text){
+                        var x = long_text;
+                        var short_text = x.slice(0,60);
+                        return short_text
+                    },
+                    dis_detil_book:function(e){
+                        //$(".clickable-row").unbind('click');
+                        //$(".clickable-row").click(function(e)
+                            e.preventDefault();
+
+                            // ⑤クリックしたタブ要素とdata属性を取得
+                            var $target = $(e.currentTarget); //eはeventでも代用可
+                            let clicked_id = $target.data('id');
+                            let formData = new FormData();
+                            formData.append("id",clicked_id);
+                            let self = this;
+                            $.ajax({
+                                type:'POST',
+                                url:'/book_detil',
+                                data:formData,
+                                processData:false,
+                                contentType:false,
+
+                                success:function(data){
+                                    self.book_detil = data;
+                                    $('#detil_modal').modal('show');
+                                },
+                                error:function(request,status,err){
+                                    self.alert_msg = '※メッセージ送信に問題が発生しました。5';
+                                }
+                            });
+                    },
+                    close_modal2:function(){
+                        $('#detil_modal').modal('hide');
+                    }
+                    
+                },
+            });
+
+            new Vue({
+            el:'#book_obj'
+            })
+            $(function() {
+                // ①Tabの切替トリガー
+                var $tabTrigger = $('.js-tab-trigger_1');
+
+                // ②Tabのコンテンツ
+                var $tabContent = $('.js-tab-content_1');
+
+                // ③トリガーのクリック
+                $tabTrigger.on('click', function(event) {
+                    // ④Clickイベントを止める
+                    event.preventDefault();
+
+                    // ⑤クリックしたタブ要素とdata属性を取得
+                    var $target = $(event.currentTarget);
+                    var $list = $target.data('tab-list');
+                    var $info = $target.data('tab-info');
+
+                    // ⑥選択中のトリガーを更新する
+                    $tabTrigger
+                    .filter('[data-tab-list="' + $list + '"]') //グループの全部の要素にある指定クラス削除。
+                    .removeClass('is-current_1')
+                    .filter('[data-tab-info="' + $info + '"]')//クリックしたタブに指定クラスを付加
+                    .addClass('is-current_1');
+
+                    // ⑦選択中のコンテンツを更新する
+                    $tabContent
+                    .filter('[data-tab-list="' + $list + '"]')
+                    .removeClass('is-current_1')
+                    .hide()
+                    .filter('[data-tab-info="' + $info + '"]')
+                    .addClass('is-current_1')
+                    .show();
+                });
+            });
+            
+        </script>
+{% endblock %}
+
+
+
+
+
+
+{% block program_content %}
+    <div id="prog_obj">
+        <prog_show/>
+    </div>
+    {% raw %}
+        <script type="text/x-template" id="prog_show_template">
+            <div>
+                <!--ALL-->
+                <div class="card ">
+                    <div class="row">
+                        <div class="col-6 roll_display">
+                            <div class="card-title p-2">
+                                LATEST POST IN ALL PROGRAM TECH
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <tbody >
+                                        <tr v-for="(item,key) in all_prog_list[0]"  >
+                                            <td class="clickable-row" v-on:click= "dis_detil_tech" :data-id="item.id">
+                                                <ul>
+                                                    <li style="font-weight:bold;">{{dis_level(item.le_level)}}</li>
+                                                    <li>{{item.explain}}</li>
+                                                    <li class="text-right">{{item.created}}</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-6 roll_display">
+                            <div class="card-title p-2">
+                                LATEST POST IN ALL PROGRAM ERROR
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <tr v-for="(item,key) in all_prog_list[1]"  >
+                                            <td class="clickable-row" v-on:click= "dis_detil_error" :data-id="item.id">
+                                                <ul>
+                                                    <li style="font-weight:bold;">{{item.err_na}}</li>
+                                                    <li>{{item.err_de}}</li>
+                                                    <li class="text-right">{{item.created}}</li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--sepa-->
+                <div class="tab1 row" style="margin-top:50px;">
+                    <!-- Tab Button show-->
+                    <div class="col-12 tab__button_" >
+                        <ul class="list1" v-for="(item,key) in sepa_prog_list" :key = item[0]>
+                            <li :class="{ item1:true ,active: currentTab === item[0]}" style="margin-top:10px;">
+                                <button class="button_1" @click="currentTab = item[0]" type="button">{{item[0]}}</button>
+                            </li>
+                        </ul>
+                    </div>
+                    <br>
+                    <!-- Tab Content show-->
+                    <div class="col-12">
+                        <div v-for="item in sepa_prog_list">
+                            <div class="js-tab-content_2 content " v-show="currentTab === item[0]">
+                                <h2 class="title">{{item[0]}}　紹介ページ</h2>
+                                <div class="box">
+                                    <p class="text">
+                                        ここでは参考書や勉強で使用した{{item[0]}}のプログラムなどの実例やつまずいたエラーなどを紹介していきます。
+                                    </p>
+                                    <div style="display:flex;">
+                                        <div class="col-6 roll_display">
+                                            <div class="card">
+                                                <div class="card-title p-2">
+                                                    LATEST IT {{item[0]}} TECH POST
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="table table-hover">
+                                                        <tbody>
+                                                            <tr v-for="(item1,key) in item[1]">
+                                                                <td class="clickable-row" v-on:click= "dis_detil_tech" :data-id="item1.id">
+                                                                    <ul>
+                                                                        <li style="font-weight:bold;">{{dis_level(item1.le_level)}}</li>
+                                                                        <li>{{item1.explain}}</li>
+                                                                        <li class="text-right">{{item1.created}}</li>
+                                                                    </ul>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 roll_display">
+                                            <div class="card">
+                                                <div class="card-title p-2">
+                                                    LATEST IT {{item[0]}} ERROR POST
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="table table-hover">
+                                                        <tbody>
+                                                            <tr v-for="(item2,key) in item[2]">
+                                                                <td class="clickable-row" v-on:click= "dis_detil_error" :data-id="item2.id">
+                                                                    <ul>
+                                                                        <li style="font-weight:bold;">{{item2.err_na}}</li>
+                                                                        <li>{{item2.err_de}}</li>
+                                                                        <li class="text-right">{{item2.created}}</li>
+                                                                    </ul>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--ここからtech詳細表示用のモーダル-->
+                <div>
+                    <div class="modal fade" id="detil_modal_tech">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content con2">
+                                <div class="modal-header">
+                                    <h1>{{tech_detil.language}}</h1>
+                                    <div class="text-right pecke_mark" style="font-size:20pt" v-on:click="close_modal2"><i class="far fa-times-circle text-right"></i></div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <h4 class="col-12 ">プログラム技法名：{{tech_detil.la_na}}</h4>
+                                    </div>
+                                    <div>
+                                        学習レベル：{{ dis_level(tech_detil.le_level) }}
+                                    </div>
+                                    <div class="" style="margin:30px 0;">
+                                        【 コード 】
+                                        <br>
+                                        {{tech_detil.la_code}}
+                                    </div>
+                                    <div>
+                                        【コード詳細説明】
+                                        <br>
+                                        {{tech_detil.explain}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </dIV>
+                </div>
+                <!--ここからerror詳細表示用のモーダル-->
+                <div>
+                    <div class="modal fade" id="detil_modal_error">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content con2">
+                                <div class="modal-header">
+                                    <h1>{{error_detil.language}}</h1>
+                                    <div class="text-right pecke_mark" style="font-size:20pt" v-on:click="close_modal2"><i class="far fa-times-circle text-right"></i></div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <h4 class="col-12">エラー見出し名：{{error_detil.err_na}}</h4>
+                                    </div>
+                                    <div class="" style="margin:30px 0;">
+                                        <div>
+                                            【エラー本文（英文）】
+                                            <br>
+                                            {{error_detil.err_body}}
+                                        </div>
+                                        <div>
+                                            【 エラー詳細説明 】
+                                            <br>
+                                            {{error_detil.err_de}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </dIV>
+                </div>
+            </div>
+        </script>
+    {% endraw %}
+        <script>
+            Vue.component('prog_show',{
+                template:'#prog_show_template',
+                data:function(){
+                    let all_prog_list = [];
+                    let sepa_prog_list = [];
+                    let self = this;
+                    $.ajax({
+                            type:'POST',
+                            url:'/get_list_prog',
+                            processData:false,
+                            contentType:false,
+                                success:function(data){
+                                    self.sepa_prog_list = data[0];
+                                    self.all_prog_list = data[1];
+                                },
+                                error:function(request,status,err){
+                                    
+
+                                    
+                                }
+                            });
+                    return{
+                        currentTab:"HTML",
+                        all_prog_list,
+                        sepa_prog_list,
+                        error_detil:[],
+                        tech_detil:[],
+                        cancel_sub:'',
+                    }
+                },
+                methods:{
+                    dis_no:function(word){
+                        let x = "";
+                        if(word != "HTML"){
+                            x = "display: none;"
+                        }else{
+                            x = "";
+                        }
+                        return x
+                    },
+                    current_path:function(num){
+                        let x = "";
+                        if(num == "HTML"){
+                        x = "is-current_2";
+                        }
+                        return x
+                    },
+                    dis_level:function(num1){
+                        let x = "";
+                        if(num1 == 1){
+                            x = "初級（これから学び始める）";
+                        }else if(num1 == 2){
+                            x = "初級（学習期間：1か月）"
+                        }else if(num1 == 3){
+                            x = "中級（学習期間：2か月～10か月）"
+                        }else if(num1 == 4){
+                            x = "中級（11か月～2年）"
+                        }else if(num1 == 5){
+                            x = "中級（学習期間：2年～5年）"
+                        }else if(num1 == 6){
+                            x = "上級（学習期間：6年～）"
+                        }
+                        return x
+                    },
+                    /*words_length:function(long_text){
+                        var x = long_text;
+                        var short_text = x.slice(0,60);
+                        return short_text
+                    },*/
+                    dis_detil_error:function(e){
+                            e.preventDefault();
+                            // ⑤クリックしたタブ要素とdata属性を取得
+                            var $target = $(e.currentTarget); //eはeventでも代用可
+                            let clicked_id = $target.data('id');
+                            let formData = new FormData();
+                            formData.append("id",clicked_id);
+                            let self = this;
+                            $.ajax({
+                                type:'POST',
+                                url:'/error_detil',
+                                data:formData,
+                                processData:false,
+                                contentType:false,
+
+                                success:function(data){
+                                    self.error_detil = data;
+                                    self.cancel_sub = "#detil_modal_error";
+                                    $('#detil_modal_error').modal('show');
+                                },
+                                error:function(request,status,err){
+                                    self.alert_msg = '※メッセージ送信に問題が発生しました。5';
+                                }
+                            });
+                    },
+                    dis_detil_tech:function(e){
+                            e.preventDefault();
+                            // ⑤クリックしたタブ要素とdata属性を取得
+                            var $target = $(e.currentTarget); //eはeventでも代用可
+                            let clicked_id = $target.data('id');
+                            let formData = new FormData();
+                            formData.append("id",clicked_id);
+                            let self = this;
+                            $.ajax({
+                                type:'POST',
+                                url:'/tech_detil',
+                                data:formData,
+                                processData:false,
+                                contentType:false,
+
+                                success:function(data){
+                                    self.tech_detil = data;
+                                    self.cancel_sub = "#detil_modal_tech";
+                                    $('#detil_modal_tech').modal('show');
+                                },
+                                error:function(request,status,err){
+                                    self.alert_msg = '※メッセージ送信に問題が発生しました。5';
+                                }
+                            });
+                    },
+                    close_modal2:function(e){
+                        let c = this.cancel_sub;
+                        $(c).modal('hide');
+                    }
+                },
+            });
+
+            new Vue({
+                el:'#prog_obj'
+            })
+            $(function() {
+                // ①Tabの切替トリガー
+                var $tabTrigger = $('.js-tab-trigger_2');
+
+                // ②Tabのコンテンツ
+                var $tabContent = $('.js-tab-content_2');
+
+                // ③トリガーのクリック
+                $tabTrigger.on('click', function(event) {
+                    // ④Clickイベントを止める
+                    event.preventDefault();
+
+                    // ⑤クリックしたタブ要素とdata属性を取得
+                    var $target = $(event.currentTarget);
+                    var $list = $target.data('tab-list');
+                    var $info = $target.data('tab-info');
+
+                    // ⑥選択中のトリガーを更新する
+                    $tabTrigger
+                    .filter('[data-tab-list="' + $list + '"]') //グループの全部の要素にある指定クラス削除。
+                    .removeClass('is-current_2')
+                    .filter('[data-tab-info="' + $info + '"]')//クリックしたタブに指定クラスを付加
+                    .addClass('is-current_2');
+
+                    // ⑦選択中のコンテンツを更新する
+                    $tabContent
+                    .filter('[data-tab-list="' + $list + '"]')
+                    .removeClass('is-current_2')
+                    .hide()
+                    .filter('[data-tab-info="' + $info + '"]')
+                    .addClass('is-current_2')
+                    .show();
+                });
+            });
+            
+        </script>
+{% endblock %}
